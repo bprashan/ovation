@@ -1,29 +1,29 @@
 import pytest
 import subprocess
 import os
+import logging
 
-def generate_rsa_key():
-    command = [
-        "openssl", "genrsa", 
-        "-out", "private_key.pem", 
-        "2048"
-    ]
-    subprocess.run(command, check=True, capture_output=True, text=True)
+from src.createkey import generate_rsa_key
 
 def test_openssl_rsa_key_generation():
-    # Remove the key file if it already exists
+    logging.info("Test started: OpenSSL RSA key generation")
+
     if os.path.exists("private_key.pem"):
+        logging.info("Existing key file found. Removing it.")
         os.remove("private_key.pem")
 
     # Run the function
     generate_rsa_key()
 
-    # Test that the key file was created
+    # Check if the key file was created
     assert os.path.exists("private_key.pem"), "private_key.pem was not created"
+    logging.info("Key file created.")
 
-    # Optional: Check if the file is not empty
+    # Check if it's not empty
     assert os.path.getsize("private_key.pem") > 0, "private_key.pem is empty"
+    logging.info("Key file is not empty.")
 
     # Cleanup
-    # os.remove("private_key.pem")
+    os.remove("private_key.pem")
+    logging.info("Test passed and cleanup done.")
 
