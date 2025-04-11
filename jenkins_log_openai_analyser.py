@@ -59,23 +59,39 @@ Analyze the Jenkins console output to identify code errors and syntax errors, us
    - refer to the provided Git repository to locate the files affected by the errors.
 
 3. **Create Automation Python Script**:
-   - Write a Python script that applies the `.patch` file to the repository using `patch` utility or manually replaces the affected lines of code.
-   - The script should handle edge cases like missing files or already-applied patches.
+   - The Python script should:
+    - Identify the relevant file, line, or function based on the console output.
+    - Apply the necessary changes to fix the errors.
+    - The script should handle edge cases like missing files, indentation errors or already-applied patches.
+    - Create a backup of the file before modifying it.
 
 # Output Format
 
 The output must contain the following:
 1. **Python Automation Script**:
-   - A fully functional Python script to automatically replace the old code with the corrected code.
+   - A fully functional Python script to automatically replace old code with corrected code, ensuring proper indentation.
    - The script should use Python libraries (like `os`, `fileinput`, `readlines` for replacements) and handle errors gracefully.
    - The script must avoid duplicating or repeating the same lines of code.
-   - In some cases, the functionality may be correct, but the pytest assertions might be incorrect. Adjust accordingly. If you are unable to fix the assertion, you can comment it out as a last resort.
+   - Maintain backups.
+   - Ensure syntax correctness.
 
 Python script must be directly provided in plain text and not wrapped in any additional formatting.
 
 # Examples
 ### Python Script Example
 ```python
+import os
+import shutil
+
+# Path to the file with the error
+local_repo_path = os.path.join(os.getcwd())
+file_path = os.path.join(local_repo_path, "test_module.py")
+backup_path = file_path + ".bak"
+
+# Backup the original file
+if not os.path.exists(backup_path):
+    shutil.copy(file_path, backup_path)
+sr
 # Apply patch to all files in the current repository
 ```
 
